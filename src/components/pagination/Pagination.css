@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f9;
     margin: 0;
-    padding: 20px;
+    padding: 0;
   }
   
   /* Table styles */
@@ -17,12 +17,12 @@ body {
   th, td {
     padding: 12px;
     text-align: left;
-    color: #007bff;
+    color: #659dda;
     border-bottom: 1px solid #ddd;
   }
   
   th {
-    background-color: #007cff;
+    background-color: #89a6c4;
     color: white;
   }
   
@@ -43,7 +43,7 @@ body {
    
   }
   button{
-    background-color: #007bff; /* Primary color */
+    background-color: #89a6c4; /* Primary color */
     color: #ffffff;
     border: none;
     cursor: pointer;
@@ -54,16 +54,18 @@ body {
     border-radius: 4px;
   }
   
+  td button:last-child {
+    background-color: #b43a47; 
+    margin-right: 10px;
+  }
+
   td button:first-child {
     background-color: #28a745; 
     margin-right: 10px;
 
   }
   
-  td button:last-child {
-    background-color: #dc3545; 
-    margin-right: 10px;
-  }
+
   
   td button:hover {
     opacity: 0.8;
@@ -80,7 +82,7 @@ body {
     margin: 0 5px;
     padding: 8px 16px;
     border: none;
-    background-color: #007bff;
+    background-color: #89a6c4;
     color: white;
     cursor: pointer;
     border-radius: 4px;

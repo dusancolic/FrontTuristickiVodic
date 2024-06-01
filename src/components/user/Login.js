@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './Form.css';
+import '../Form.css';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
@@ -28,6 +28,8 @@ function Login() {
             setError('');
             console.log('Login successful:', response.data);
             localStorage.setItem('jwt', response.data.jwt);
+            localStorage.setItem('userType',response.data.user_type);
+            localStorage.setItem('name',response.data.name);
             navigate('/destinations');
 
 

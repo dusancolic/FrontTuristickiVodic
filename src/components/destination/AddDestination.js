@@ -22,7 +22,6 @@ function AddDestination() {
             });
             console.log('Add successful:', response.data);
             navigate('/destinations');
-            // Dodajte kod za obradu uspešnog logovanja ovde
     
         } catch (error) {
             setError("Invalid name!");

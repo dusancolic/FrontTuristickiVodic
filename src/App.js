@@ -1,12 +1,17 @@
 import './App.css';
-import AddDestination from './components/AddDestination';
-import Dashboard from './components/Dashboard';
-import DestinationTable from './components/Destination';
-import EditDestination from './components/EditDestination';
+import AddDestination from './components/destination/AddDestination';
+import Dashboard from './components/dashboard/Dashboard';
+import DestinationTable from './components/destination/Destination';
+import EditDestination from './components/destination/EditDestination';
 import { BrowserRouter as Router,Route,Routes } from 'react-router-dom';
-import Login from './components/Login';
-import Users from './components/Users';
-import EditUser from './components/EditUser';
+import Login from './components/user/Login';
+import Users from './components/user/Users';
+import EditUser from './components/user/EditUser';
+import RegisterUser from './components/user/RegisterUser';
+import ArticlePlatform from './ArticlePlatform';
+import ArticleTable from './components/ArticleFrontPage';
+import PopularArticlesTable from './components/MostPopularArticles';
+import Articles from './components/Article';
 
 
 function App() {
@@ -23,7 +28,11 @@ function App() {
             <Route path="/destinations/edit/:name" element={<EditDestination />} />
             <Route path="/users" element={<Users />} />
             <Route path="/users/edit/:email" element={<EditUser />} />
-
+            <Route path="/users/register" element={<RegisterUser />} />
+            <Route path="/articles" element={<Articles />} />
+            <Route path="/destination"  element={<ArticlePlatform />} />
+            <Route path="/destination/popular" element={<PopularArticlesTable />} />
+            <Route path="/destination/about" element={<ArticleTable/>} />
           </Routes>
         </Router>
       </header>

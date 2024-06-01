@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Pagination.css'
-import Pagination from './Pagination.js'
+import '../pagination/Pagination.css'
+import Pagination from '../pagination/Pagination.js'
 
 const usersPerPage = 5;
 
@@ -42,6 +42,7 @@ const UserTable = () => {
   const startIndex = (currentPage - 1) * usersPerPage;
   const endIndex = startIndex + usersPerPage;
   const paginatedUsers = users.slice(startIndex, endIndex);
+  
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -88,8 +89,12 @@ const UserTable = () => {
               <td>{user.active? 'Activated' : "Deactivated"}</td>
               <td>
                 <button onClick={() => handleEdit(user.email)}>Edit</button>
-                <button onClick={() => handleActivation(user.email)}>{user.active? 'Deactivate' : "Activate"}</button>
-              </td>
+                  {user.userType !== 'ADMIN' && (
+                    <button onClick={() => handleActivation(user.email)}>
+                      {user.active ? 'Deactivate' : 'Activate'}
+                    </button>
+                   )}              
+            </td>
             </tr>
           ))}
         </tbody>

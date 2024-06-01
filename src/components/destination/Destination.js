@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Pagination.css'
-import Pagination from './Pagination.js'
+import '../pagination/Pagination.css'
+import Pagination from '../pagination/Pagination.js'
 
 const destinationsPerPage = 5;
 
@@ -19,7 +19,6 @@ const DestinationTable = () => {
            'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
         },
       });
-      
         
       if (!response.ok) {
         throw new Error(`Network response was not ok: ${response.statusText}`);
@@ -42,6 +41,7 @@ const DestinationTable = () => {
   const startIndex = (currentPage - 1) * destinationsPerPage;
   const endIndex = startIndex + destinationsPerPage;
   const paginatedDestinations = destinations.slice(startIndex, endIndex);
+  
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -49,6 +49,7 @@ const DestinationTable = () => {
 
   const handleEdit = (name) => {
     navigate(`/destinations/edit/${name}`);
+   // window.open(`/articles`, '_blank');
   }
   const handleDelete = async (name) => {
     try {
