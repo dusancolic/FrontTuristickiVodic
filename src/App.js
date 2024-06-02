@@ -8,10 +8,13 @@ import Login from './components/user/Login';
 import Users from './components/user/Users';
 import EditUser from './components/user/EditUser';
 import RegisterUser from './components/user/RegisterUser';
-import ArticlePlatform from './ArticlePlatform';
-import ArticleTable from './components/ArticleFrontPage';
-import PopularArticlesTable from './components/MostPopularArticles';
-import Articles from './components/Article';
+import ArticlePlatform from './components/article/ArticlePlatform';
+import ArticleTable from './components/article/ArticleFrontPage';
+import PopularArticlesTable from './components/article/MostPopularArticles';
+import Articles from './components/article/Article';
+import AddArticle from './components/article/AddArticle';
+import EditArticle from './components/article/EditArticle';
+import AboutDestination from './components/destination/AboutDestination';
 
 
 function App() {
@@ -30,9 +33,13 @@ function App() {
             <Route path="/users/edit/:email" element={<EditUser />} />
             <Route path="/users/register" element={<RegisterUser />} />
             <Route path="/articles" element={<Articles />} />
+            <Route path="/articles/add" element={<AddArticle />} />
+            <Route path="/articles/edit/:id" element={<EditArticle />} />
             <Route path="/destination"  element={<ArticlePlatform />} />
             <Route path="/destination/popular" element={<PopularArticlesTable />} />
             <Route path="/destination/about" element={<ArticleTable/>} />
+            <Route path="/destination/about/:name" element={<AboutDestination/>} />
+
           </Routes>
         </Router>
       </header>

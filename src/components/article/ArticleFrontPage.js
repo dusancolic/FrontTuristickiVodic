@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
-import './pagination/Pagination.css'
-import Pagination from './pagination/Pagination.js'
+import '../pagination/Pagination.css'
+import Pagination from '../pagination/Pagination.js'
 
 const articlesPerPage = 5;
 

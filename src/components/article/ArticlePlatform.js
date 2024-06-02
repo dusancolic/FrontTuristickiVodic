@@ -1,5 +1,5 @@
 import './ArticlePlatform.css';
-import Dashboard1 from './components/dashboard_articles/Dashboard1';
+import Dashboard1 from '../dashboard_articles/Dashboard1';
 
 
 

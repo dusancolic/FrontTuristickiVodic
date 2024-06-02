@@ -43,14 +43,14 @@ body {
    
   }
   button{
-    background-color: #89a6c4; /* Primary color */
+    background-color: #89a6c4;
     color: #ffffff;
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
     width: auto;
     margin: 0;
-    padding: 12px 24px; /* Increased padding for a larger button */
+    padding: 12px 24px; 
     border-radius: 4px;
   }
   
@@ -65,12 +65,23 @@ body {
 
   }
   
-
+  
   
   td button:hover {
     opacity: 0.8;
   }
+
+  .td-name{
+    cursor: pointer;
+    color: #3e78b6;
+
+  }
   
+  .td-name:hover {
+    text-decoration: underline;
+  }
+
+
   /* Pagination styles */
   .pagination {
     display: flex;

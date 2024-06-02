@@ -35,7 +35,9 @@ const DestinationTable = () => {
     fetchDestinations();
   }, []);
 
-
+  const handleClick = (name) => () => {
+    navigate(`/destination/about/${name}`);
+  };
 
   const totalPages = Math.ceil(destinations.length / destinationsPerPage);
   const startIndex = (currentPage - 1) * destinationsPerPage;
@@ -48,7 +50,8 @@ const DestinationTable = () => {
   };
 
   const handleEdit = (name) => {
-    navigate(`/destinations/edit/${name}`);
+     navigate(`/destinations/edit/${name}`);
+   // navigate(`/articles/add`);
    // window.open(`/articles`, '_blank');
   }
   const handleDelete = async (name) => {
@@ -83,7 +86,7 @@ const DestinationTable = () => {
         <tbody>
           {paginatedDestinations.map((destination) => (
             <tr key={destination.id}>
-              <td>{destination.name}</td>
+              <td className = "td-name" onClick={handleClick(destination.name)}>{destination.name}</td>
               <td>{destination.description}</td>
               <td>
                 <button onClick={() => handleEdit(destination.name)}>Edit</button>

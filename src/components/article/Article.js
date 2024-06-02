@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
-import './pagination/Pagination.css'
-import Pagination from './pagination/Pagination.js'
+import '../pagination/Pagination.css'
+import Pagination from '../pagination/Pagination.js'
 
 const articlesPerPage = 5;
 
@@ -33,8 +33,8 @@ const Articles = () => {
       setError('Error fetching articles');
     }
   };
-  const handleEdit = (name) => {
-     navigate(`/articles/edit/${name}`);
+  const handleEdit = (id) => {
+     navigate(`/articles/edit/${id}`);
     //  window.open(`/articles`, '_blank');
    }
    const handleDelete = async (id) => {
