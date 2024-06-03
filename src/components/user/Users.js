@@ -9,10 +9,12 @@ const UserTable = () => {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
+  const [totalPages, setTotalPages] = useState(1);
+  const [error, setError] = useState('');
 
-  const fetchUsers = async () => {
+  const fetchUsers = async (page,size) => {
     try {
-     const response =  await fetch('http://localhost:8080/api/users', {
+     const response =  await fetch(`http://localhost:8080/api/users?page=${page}&size=${size}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -26,26 +28,21 @@ const UserTable = () => {
       }
 
       const data = await response.json();
-      setUsers(data);
+      setUsers(data.users);
+      setTotalPages(data.totalPages);
       
     } catch (error) {
-      console.error('Error:', error);
+      setError('Error fetching users');
     }
   };
   useEffect(() => {
-    fetchUsers();
+    fetchUsers(currentPage,usersPerPage);
   }, []);
 
 
-
-  const totalPages = Math.ceil(users.length / usersPerPage);
-  const startIndex = (currentPage - 1) * usersPerPage;
-  const endIndex = startIndex + usersPerPage;
-  const paginatedUsers = users.slice(startIndex, endIndex);
-  
-
   const handlePageChange = (page) => {
     setCurrentPage(page);
+    fetchUsers(page,usersPerPage);
   };
 
   const handleEdit = (email) => {
@@ -61,11 +58,15 @@ const UserTable = () => {
             },
         });
 
-        fetchUsers();
+        fetchUsers(currentPage,usersPerPage);
     } catch (error) {
         console.error('Error:', error);
     }
 }
+
+  if(error)
+    return <div>{error}</div>;
+
   return (
     <div>
       <table>
@@ -80,7 +81,7 @@ const UserTable = () => {
           </tr>
         </thead>
         <tbody>
-          {paginatedUsers.map((user) => (
+          {users.map((user) => (
             <tr key={user.id}>
               <td>{user.name}</td>
               <td>{user.surname}</td>

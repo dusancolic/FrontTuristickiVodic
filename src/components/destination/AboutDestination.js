@@ -11,11 +11,11 @@ const AboutDestination = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { name } = useParams();
+  const destination  = localStorage.getItem("destination");
 
   const fetchArticles = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/articles/destination/${name}`, {
+      const response = await fetch(`http://localhost:8080/api/articles/destination/${destination}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -30,7 +30,10 @@ const AboutDestination = () => {
       const data = await response.json();
       setArticles(data);
     } catch (error) {
-      setError('Error fetching articles');
+      if(error.message.includes('401'))
+        setError('Unauthorized!');
+      else 
+        setError('Error fetching articles');
     }
   };
 
@@ -44,8 +47,8 @@ const AboutDestination = () => {
       }
     });
       
-    } catch (err) {
-      if(err.message.includes('401'))
+    } catch (error) {
+      if(error.message.includes('401'))
         setError('Unauthorized!');
     }
   };
@@ -57,7 +60,7 @@ const AboutDestination = () => {
 
   useEffect(() => {
     fetchArticles();
-  }, [name]);
+  }, [destination]);
 
   const totalPages = Math.ceil(Articles.length / articlesPerPage);
   const startIndex = (currentPage - 1) * articlesPerPage;
@@ -68,9 +71,12 @@ const AboutDestination = () => {
     setCurrentPage(page);
   };
 
+    if (error) {
+      return <p className="error-message">{error}</p>;
+    }
   return (
     <div>
-      <h2>Articles About {name}</h2>
+      <h2>Articles About {destination}</h2>
       {error && <p className="error-message">{error}</p>}
       {Articles.length === 0 ? (
         <p>No articles for this destination</p>
@@ -89,7 +95,7 @@ const AboutDestination = () => {
               {paginatedArticles.map((Article) => (
                 <tr key={Article.id} onClick={handleClick(Article.id)}>
                   <td>{Article.title}</td>
-                  <td>{name}</td>
+                  <td>{destination}</td>
                   <td>{Article.text.length > 50 ? `${Article.text.slice(0, 50)}...` : Article.text}</td>
                   <td>{Article.date}</td>
                 </tr>

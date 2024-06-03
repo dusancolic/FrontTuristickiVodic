@@ -28,7 +28,7 @@ function EditUser() {
                 setNewEmail(response.data.email);
                 setUserType(response.data.userType);
             } catch (error) {
-                console.error('Error:', error);
+                setError('Error fetching user');
             }
         };
 
@@ -54,7 +54,16 @@ function EditUser() {
             console.log('Edit successful:', response.data);
             navigate('/users');
         } catch (error) {
-            setError("Invalid email!");
+            if(error.response.status === 401)
+                setError('Unauthorized!');
+            else if (error.response.status === 400) {
+                setError('Invalid user type!');
+                setUserType('');
+            }
+            else {
+                setError('User with this email already exists!');
+                setNewEmail('');
+            }
         }
     };
 

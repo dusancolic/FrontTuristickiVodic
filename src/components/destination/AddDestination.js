@@ -26,10 +26,15 @@ function AddDestination() {
             navigate('/destinations');
     
         } catch (error) {
-            setError("Invalid name!");
+            if(error.message.includes('401'))
+                setError('Unauthorized!');
+            else (error.message.includes('400')) 
+                setError('Invalid name!');
+            
+            setDescription('');
+            setName('');
         }
-        setName('');
-        setDescription('');
+       
     };
 
     return (

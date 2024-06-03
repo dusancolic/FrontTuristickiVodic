@@ -7,6 +7,7 @@ const destinationsPerPage = 5;
 
 const DestinationTable = () => {
   const [destinations, setDestinations] = useState([]);
+  const [error, setError] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
 
@@ -28,7 +29,10 @@ const DestinationTable = () => {
       setDestinations(data);
       
     } catch (error) {
-      console.error('Error:', error);
+      if(error.message.includes('401'))
+        setError('Unauthorized!');
+      else
+        setError('Error fetching destinations');
     }
   };
   useEffect(() => {
@@ -36,6 +40,7 @@ const DestinationTable = () => {
   }, []);
 
   const handleClick = (name) => () => {
+    localStorage.setItem('destination', name);
     navigate(`/destination/about/${name}`);
   };
 
@@ -74,6 +79,9 @@ const DestinationTable = () => {
         console.error('Error:', error);
     }
 }
+  if(error)
+    return <div>{error}</div>;
+
   return (
     <div>
       <table>

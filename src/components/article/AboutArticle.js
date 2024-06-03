@@ -16,7 +16,6 @@ const AboutArticle = () => {
   const [comments, setComments] = useState([]);
   const { id } = useParams();
   const [error, setError] = useState('');
-  const navigate = useNavigate();
 
   const fetchArticle = async () => {
     try {
@@ -104,7 +103,10 @@ const AboutArticle = () => {
       });
       setActivities(activitiesMap);
     } catch (err) {
-      setError('Error fetching activities');
+      if(err.message.includes('401'))
+        setError('Unauthorized!');
+      else
+        setError('Error fetching activities');
       console.error('Error fetching activities:', err);
     }
   };

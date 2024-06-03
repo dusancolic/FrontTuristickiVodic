@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 import '../Form.css';
 import { useNavigate } from 'react-router-dom';
+
 
 function Login() {
     const [email, setEmail] = useState('');
     const navigate = useNavigate();
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const logged = !!localStorage.getItem('jwt');
 
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
@@ -37,6 +39,11 @@ function Login() {
             setError("Invalid email or password!");
         }
     };
+    useEffect(() => {
+        if (logged) {
+            navigate('/destinations');
+        }
+    }, [logged, navigate]);
 
     return (
         <div className='form-container'>

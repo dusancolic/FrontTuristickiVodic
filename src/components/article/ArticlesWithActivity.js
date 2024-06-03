@@ -32,6 +32,9 @@ const ArticlesWithActivity = () => {
   
       setDestinations(destinationsMap);
     } catch (err) {
+      if(err.message.includes('401'))
+        setError('Unauthorized!');
+      else
       setError('Error fetching destinations');
     }
   };

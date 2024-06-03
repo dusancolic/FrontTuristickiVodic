@@ -29,7 +29,10 @@ function EditArticle() {
             setSelectedDestination(article.destinationId);
             setSelectedActivities(article.activities);
         } catch (error) {
-            console.error('Error:', error);
+            if(error.message.includes('401'))
+                setError('Unauthorized!');
+            else  
+                setError('Error fetching!');
         }
     };
     
@@ -56,7 +59,7 @@ function EditArticle() {
             navigate('/articles');
         } catch (error) {
             console.error('Error:', error);
-            setError("Invalid data!");
+            setError("Error editing article!");
         }
     };
 

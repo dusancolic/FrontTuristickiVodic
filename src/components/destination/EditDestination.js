@@ -26,7 +26,7 @@ function EditDestination() {
                 setDescription1(response.data.description);
                 setId(response.data.id);
             } catch (error) {
-                console.error('Error:', error);
+                setError('Error fetching destination');
             }
         };
         
@@ -50,8 +50,14 @@ function EditDestination() {
             console.log('Edit successful:', response.data);
             navigate('/destinations');
         } catch (error) {
-            setError("Invalid name!");
-        }
+            if(error.message.includes('401'))
+                setError('Unauthorized!');
+            else (error.message.includes('400')) 
+                setError('Invalid name!');
+            
+            setDescription1('');
+            setName1('');
+         }
     };
 
     return (

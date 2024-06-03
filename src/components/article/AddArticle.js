@@ -62,6 +62,10 @@ function AddArticle() {
 
             setDestinations(destinationsMap);
         } catch (err) {
+            if(err.response.status === 401) {
+                setError('Unauthorized!');
+            } 
+            else 
             setError('Error fetching destinations');
         }
     };
@@ -120,8 +124,9 @@ function AddArticle() {
         } catch (error) {
             console.error('Error:', error);
             setError("Invalid name!");
+            setActivity('');
         }
-        setActivity('');
+       
     }
 
     return (

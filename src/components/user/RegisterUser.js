@@ -32,7 +32,16 @@ function RegisterUser() {
             navigate('/users');
     
         } catch (error) {
-            setError("Invalid name!");
+            if(error.response.status === 401)
+                setError('Unauthorized!');
+            else if (error.response.status === 400) {
+                setError('Invalid user type!');
+                setUserType('');
+            }
+            else {
+                setError('User with this email already exists!');
+                setEmail('');
+            }
         }
 
     };

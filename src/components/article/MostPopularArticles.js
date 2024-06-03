@@ -30,7 +30,10 @@ const PopularArticlesTable = () => {
       setArticles(data);
       
     } catch (error) {
-      setError('Error fetching articles');
+      if(error.message.includes('401'))
+        setError('Unauthorized!');
+      else 
+        setError('Error fetching articles');
     }
   };
 
@@ -93,6 +96,9 @@ const PopularArticlesTable = () => {
     setCurrentPage(page);
   };
 
+  if (error) {
+    return <div>{error}</div>;
+  }
   return (
     <div>
         <h2>Most Popular Articles</h2>

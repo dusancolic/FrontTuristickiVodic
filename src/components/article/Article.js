@@ -74,7 +74,10 @@ const Articles = () => {
   
       setDestinations(destinationsMap);
     } catch (err) {
-      setError('Error fetching destinations');
+      if(err.message.includes('401'))
+        setError('Unauthorized!');
+      else
+        setError('Error fetching destinations');
     }
   };
 
@@ -115,6 +118,10 @@ const Articles = () => {
     fetchVisitArticles(id);
     navigate(`/articles/${id}`);
   };
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <div>
