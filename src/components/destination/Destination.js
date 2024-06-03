@@ -50,7 +50,8 @@ const DestinationTable = () => {
   };
 
   const handleEdit = (name) => {
-     navigate(`/destinations/edit/${name}`);
+    ///navigate(`/articles/activity/1`);
+    navigate(`/destinations/edit/${name}`);
    // navigate(`/articles/add`);
    // window.open(`/articles`, '_blank');
   }

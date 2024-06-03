@@ -81,6 +81,9 @@ body {
     text-decoration: underline;
   }
 
+  .h2{
+    color: #3e78b6;
+  }
 
   /* Pagination styles */
   .pagination {

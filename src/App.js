@@ -15,6 +15,8 @@ import Articles from './components/article/Article';
 import AddArticle from './components/article/AddArticle';
 import EditArticle from './components/article/EditArticle';
 import AboutDestination from './components/destination/AboutDestination';
+import ArticlesWithActivity from './components/article/ArticlesWithActivity';
+import AboutArticle from './components/article/AboutArticle';
 
 
 function App() {
@@ -38,6 +40,9 @@ function App() {
             <Route path="/destination"  element={<ArticlePlatform />} />
             <Route path="/destination/popular" element={<PopularArticlesTable />} />
             <Route path="/destination/about" element={<ArticleTable/>} />
+            <Route path="/articles/activity/:id" element={<ArticlesWithActivity/>} />
+            <Route path="/articles/:id" element={<AboutArticle/>} />
+            
             <Route path="/destination/about/:name" element={<AboutDestination/>} />
 
           </Routes>

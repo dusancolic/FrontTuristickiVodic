@@ -95,6 +95,27 @@ const Articles = () => {
     setCurrentPage(page);
   };
 
+  const fetchVisitArticles = async (id) => {
+    try {
+      await fetch(`http://localhost:8080/api/articles/visit/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+      }
+    });
+      
+    } catch (err) {
+      if(err.message.includes('401'))
+        setError('Unauthorized!');
+    }
+  };
+
+  const handleClick = (id) => () => {
+    fetchVisitArticles(id);
+    navigate(`/articles/${id}`);
+  };
+
   return (
     <div>
         <h2>All Articles</h2>
@@ -110,14 +131,14 @@ const Articles = () => {
         </thead>
         <tbody>
           {paginatedArticles.map((Article) => (
-            <tr key={Article.id}>
+            <tr key={Article.id} onClick={handleClick(Article.id)}>
               <td>{Article.title}</td>
               <td>{destinations[Article.destinationId]}</td>
               <td>{Article.text.length > 50 ? `${Article.text.slice(0, 50)}...` : Article.text}</td>
               <td>{Article.date}</td>
               <td>
-                <button onClick={() => handleEdit(Article.id)}>Edit</button>
-                <button onClick={() => handleDelete(Article.id)}>Delete</button>
+                <button onClick={(e) => { e.stopPropagation(); handleEdit(Article.id); }}>Edit</button>
+                <button onClick={(e) => { e.stopPropagation(); handleDelete(Article.id); }}>Delete</button>
               </td>
             </tr>
           ))}
