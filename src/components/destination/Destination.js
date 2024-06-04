@@ -8,12 +8,13 @@ const destinationsPerPage = 5;
 const DestinationTable = () => {
   const [destinations, setDestinations] = useState([]);
   const [error, setError] = useState('');
+  const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
 
-  const fetchDestinations = async () => {
+  const fetchDestinations = async (page,size) => {
     try {
-     const response =  await fetch('http://localhost:8080/api/destinations', {
+     const response =  await fetch(`http://localhost:8080/api/destinations?page=${page}&size=${size}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -26,7 +27,8 @@ const DestinationTable = () => {
       }
 
       const data = await response.json();
-      setDestinations(data);
+      setDestinations(data.destinations);
+      setTotalPages(data.totalPages);
       
     } catch (error) {
       if(error.message.includes('401'))
@@ -36,7 +38,7 @@ const DestinationTable = () => {
     }
   };
   useEffect(() => {
-    fetchDestinations();
+    fetchDestinations(currentPage,destinationsPerPage);
   }, []);
 
   const handleClick = (name) => () => {
@@ -44,14 +46,10 @@ const DestinationTable = () => {
     navigate(`/destination/about/${name}`);
   };
 
-  const totalPages = Math.ceil(destinations.length / destinationsPerPage);
-  const startIndex = (currentPage - 1) * destinationsPerPage;
-  const endIndex = startIndex + destinationsPerPage;
-  const paginatedDestinations = destinations.slice(startIndex, endIndex);
-  
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+    fetchDestinations(page,destinationsPerPage);
   };
 
   const handleEdit = (name) => {
@@ -70,7 +68,7 @@ const DestinationTable = () => {
             },
         });
        
-        fetchDestinations();
+        fetchDestinations(currentPage,destinationsPerPage);
         if (currentPage > 1 && destinations.length % destinationsPerPage === 1) {
           setCurrentPage(currentPage - 1);
         }
@@ -93,7 +91,7 @@ const DestinationTable = () => {
           </tr>
         </thead>
         <tbody>
-          {paginatedDestinations.map((destination) => (
+          {destinations.map((destination) => (
             <tr key={destination.id}>
               <td className = "td-name" onClick={handleClick(destination.name)}>{destination.name}</td>
               <td>{destination.description}</td>

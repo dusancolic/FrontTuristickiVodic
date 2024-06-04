@@ -16,6 +16,7 @@ const AboutArticle = () => {
   const [comments, setComments] = useState([]);
   const { id } = useParams();
   const [error, setError] = useState('');
+  const [totalPages, setTotalPages] = useState(1);
 
   const fetchArticle = async () => {
     try {
@@ -39,9 +40,9 @@ const AboutArticle = () => {
     }
   };
 
-  const fetchComments = async () => {
+  const fetchComments = async (page,size) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/comments/article/${id}`, {
+      const response = await fetch(`http://localhost:8080/api/comments/article/${id}?page=${page}&size=${size}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -54,7 +55,8 @@ const AboutArticle = () => {
       }
 
       const data = await response.json();
-      setComments(data);
+      setComments(data.comments);
+      setTotalPages(data.totalPages);
     } catch (error) {
       setError('Error fetching comments');
       console.error('Error fetching comments:', error);
@@ -73,7 +75,7 @@ const AboutArticle = () => {
       const data = await response.json();
 
       const destinationsMap = {};
-      data.forEach(destination => {
+      data.destinations.forEach(destination => {
         destinationsMap[destination.id] = destination.name;
       });
 
@@ -130,7 +132,7 @@ const AboutArticle = () => {
       if (!response.ok) {
         throw new Error(`Network response was not ok: ${response.statusText}`);
       }
-      fetchComments();
+      fetchComments(currentPage,commentsPerPage);
       console.log(comments);
       setAuthor('');
       setText('');
@@ -143,18 +145,22 @@ const AboutArticle = () => {
   useEffect(() => {
     fetchArticle();
     fetchDestinations();
-    fetchComments();
+    fetchComments(currentPage,commentsPerPage);
     fetchActivities();
   }, []);
 
-  const totalPages = Math.ceil(comments.length / commentsPerPage);
-  const startIndex = (currentPage - 1) * commentsPerPage;
-  const endIndex = startIndex + commentsPerPage;
-  const paginatedComments = comments.slice(startIndex, endIndex);
+
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+    fetchComments(page,commentsPerPage);
   };
+
+  const handleClick = (activityId) => {
+    return () => {
+      localStorage.setItem('activity', activities[activityId]);
+    };
+  }
 
   return (
     <div className="about-article">
@@ -163,7 +169,11 @@ const AboutArticle = () => {
       <p><strong>Date:</strong> {article.date}</p>
       <p><strong>Text:</strong> {article.text}</p>
       <p><strong>Destination:</strong> {destinations[article.destinationId]}</p>
-      <p><strong>Activities:</strong> {article.activities && article.activities.map((activityId) => activities[activityId]).join(', ')}</p>
+      <p><strong>Activities:</strong> 
+        {article.activities && article.activities.map(activityId => (
+          <a onClick={handleClick(activityId)} key={activityId} href={`/articles/activity/${activityId}`}>{activities[activityId]} </a>
+        ))}
+      </p>
       {comments.length === 0 ? (
         <p>No comments for this article</p>
       ) : (
@@ -177,7 +187,7 @@ const AboutArticle = () => {
               </tr>
             </thead>
             <tbody>
-              {paginatedComments.map((comment) => (
+              {comments.map((comment) => (
                 <tr key={comment.id}>
                   <td>{comment.author}</td>
                   <td>{comment.text}</td>

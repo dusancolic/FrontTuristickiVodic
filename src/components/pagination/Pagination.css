@@ -65,7 +65,10 @@ body {
 
   }
   
-  
+  a {
+    text-decoration: none;
+    color: #3e78b6;
+  }
   
   td button:hover {
     opacity: 0.8;

@@ -11,10 +11,12 @@ const PopularArticlesTable = () => {
   const [destinations, setDestinations] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const [totalPages, setTotalPages] = useState(1);
 
-  const fetchArticles = async () => {
+
+  const fetchArticles = async (page,size) => {
     try {
-     const response =  await fetch('http://localhost:8080/api/articles/most-visited', {
+     const response =  await fetch(`http://localhost:8080/api/articles/most-visited?page=${page}&size=${size}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -27,7 +29,8 @@ const PopularArticlesTable = () => {
       }
 
       const data = await response.json();
-      setArticles(data);
+      setArticles(data.articles);
+      setTotalPages(data.totalPages);
       
     } catch (error) {
       if(error.message.includes('401'))
@@ -49,7 +52,7 @@ const PopularArticlesTable = () => {
       const data = await response.json();
   
       const destinationsMap = {};
-      data.forEach(destination => {
+      data.destinations.forEach(destination => {
         destinationsMap[destination.id] = destination.name;
       });
   
@@ -60,7 +63,7 @@ const PopularArticlesTable = () => {
   };
 
   useEffect(() => {
-    fetchArticles();
+    fetchArticles(currentPage,articlesPerPage);
     fetchDestinations();
   }, []);
 
@@ -85,15 +88,9 @@ const PopularArticlesTable = () => {
     navigate(`/articles/${id}`);
   };
 
-
-  const totalPages = Math.ceil(Articles.length / articlesPerPage);
-  const startIndex = (currentPage - 1) * articlesPerPage;
-  const endIndex = startIndex + articlesPerPage;
-  const paginatedArticles = Articles.slice(startIndex, endIndex);
-  
-
   const handlePageChange = (page) => {
     setCurrentPage(page);
+    fetchArticles(page,articlesPerPage);
   };
 
   if (error) {
@@ -112,7 +109,7 @@ const PopularArticlesTable = () => {
           </tr>
         </thead>
         <tbody>
-          {paginatedArticles.map((Article) => (
+          {Articles.map((Article) => (
             <tr key={Article.id} onClick={handleClick(Article.id)}>
               <td>{Article.title}</td>
               <td>{destinations[Article.destinationId]}</td>

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import '../pagination/Pagination.css';
 import Pagination from '../pagination/Pagination.js';
 import { useNavigate } from 'react-router-dom';
@@ -12,10 +11,13 @@ const AboutDestination = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const destination  = localStorage.getItem("destination");
+  
+  const [totalPages, setTotalPages] = useState(1);
+ 
 
-  const fetchArticles = async () => {
+  const fetchArticles = async (page,size) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/articles/destination/${destination}`, {
+      const response = await fetch(`http://localhost:8080/api/articles/destination/${destination}?page=${page}&size=${size}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -28,7 +30,8 @@ const AboutDestination = () => {
       }
 
       const data = await response.json();
-      setArticles(data);
+      setArticles(data.articles);
+      setTotalPages(data.totalPages);
     } catch (error) {
       if(error.message.includes('401'))
         setError('Unauthorized!');
@@ -59,16 +62,13 @@ const AboutDestination = () => {
   };
 
   useEffect(() => {
-    fetchArticles();
+    fetchArticles(currentPage,articlesPerPage);
   }, [destination]);
 
-  const totalPages = Math.ceil(Articles.length / articlesPerPage);
-  const startIndex = (currentPage - 1) * articlesPerPage;
-  const endIndex = startIndex + articlesPerPage;
-  const paginatedArticles = Articles.slice(startIndex, endIndex);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+    fetchArticles(page,articlesPerPage);
   };
 
     if (error) {
@@ -92,7 +92,7 @@ const AboutDestination = () => {
               </tr>
             </thead>
             <tbody>
-              {paginatedArticles.map((Article) => (
+              {Articles.map((Article) => (
                 <tr key={Article.id} onClick={handleClick(Article.id)}>
                   <td>{Article.title}</td>
                   <td>{destination}</td>

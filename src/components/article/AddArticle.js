@@ -56,7 +56,7 @@ function AddArticle() {
             const data = await response.json();
 
             const destinationsMap = {};
-            data.forEach(destination => {
+            data.destinations.forEach(destination => {
                 destinationsMap[destination.id] = destination.name;
             });
 
