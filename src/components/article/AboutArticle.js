@@ -157,9 +157,7 @@ const AboutArticle = () => {
   };
 
   const handleClick = (activityId) => {
-    return () => {
       localStorage.setItem('activity', activities[activityId]);
-    };
   }
 
   return (

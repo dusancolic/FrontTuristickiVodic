@@ -7,6 +7,7 @@ const destinationsPerPage = 5;
 
 const DestinationTable = () => {
   const [destinations, setDestinations] = useState([]);
+  const logged = !!localStorage.getItem('jwt');
   const [error, setError] = useState('');
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -87,7 +88,7 @@ const DestinationTable = () => {
           <tr>
             <th>Name</th>
             <th>Description</th>
-            <th>Actions</th>
+            {(logged &&<th>Actions</th>)}
           </tr>
         </thead>
         <tbody>
@@ -95,10 +96,10 @@ const DestinationTable = () => {
             <tr key={destination.id}>
               <td className = "td-name" onClick={handleClick(destination.name)}>{destination.name}</td>
               <td>{destination.description}</td>
-              <td>
+             {(logged && <td>
                 <button onClick={() => handleEdit(destination.name)}>Edit</button>
                 <button onClick={() => handleDelete(destination.name)}>Delete</button>
-              </td>
+              </td>)}
             </tr>
           ))}
         </tbody>
@@ -106,7 +107,7 @@ const DestinationTable = () => {
 
       <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
       <br />
-      <button onClick={() => navigate('/destinations/add')}>Add new destination</button>
+      {( logged && <button onClick={() => navigate('/destinations/add')}>Add new destination</button>)}
 
     </div>
   );

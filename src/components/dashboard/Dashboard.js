@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Dashboard.css';
-import useAuthRedirect from '../../hooks/useAuthRedirect';
 import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
@@ -10,10 +9,8 @@ const Dashboard = () => {
     const name = localStorage.getItem('name');
     const destination = localStorage.getItem('destination');
     const navigate = useNavigate();
-    useAuthRedirect();
 
     return (
-        logged && (
             <>
                 <nav className="navbar">
                     <ul className="nav-list">
@@ -42,19 +39,24 @@ const Dashboard = () => {
                     </ul>
                     {admin && (<span className="user-name">{name} (A)</span>)}
                     {!admin && (<span className="user-name">{name}</span>)}
+                    {logged &&(
                     <button className="nav-button" onClick={() => {
                         localStorage.removeItem('jwt');
                         localStorage.removeItem('userType');
                         localStorage.removeItem('name');
                         localStorage.removeItem('destination');
                         navigate('/');
-                    }}>Logout</button>
+                    }}>Logout</button>)}
+
+                   {(!logged && <button className="nav-button" onClick={() => {
+                        navigate('/');
+                    }
+                    }>Login</button>)}
                 </nav>
                 <div className="content">
                 </div>
             </>
         )
-    );
 };
 
 export default Dashboard;

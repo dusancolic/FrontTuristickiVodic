@@ -18,7 +18,6 @@ import ArticlesWithActivity from './components/article/ArticlesWithActivity';
 import AboutArticle from './components/article/AboutArticle';
 
 function App() {
-  localStorage.setItem('destination','')
   return (
     <div className="App">
       <header className="App-header" >

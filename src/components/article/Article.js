@@ -8,6 +8,7 @@ const articlesPerPage = 5;
 const Articles = () => {
   const [Articles, setArticles] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const logged = !!localStorage.getItem('jwt');
   const [destinations, setDestinations] = useState('');
   const [error, setError] = useState('');
   const [totalPages, setTotalPages] = useState(1);
@@ -129,7 +130,7 @@ const Articles = () => {
             <th>Destination</th>
             <th>Text</th>
             <th>Date</th>
-            <th>Actions</th>
+           {(logged && <th>Actions</th> )} 
           </tr>
         </thead>
         <tbody>
@@ -139,10 +140,10 @@ const Articles = () => {
               <td>{destinations[Article.destinationId]}</td>
               <td>{Article.text.length > 50 ? `${Article.text.slice(0, 50)}...` : Article.text}</td>
               <td>{Article.date}</td>
-              <td>
+             {(logged && <td>
                 <button onClick={(e) => { e.stopPropagation(); handleEdit(Article.id); }}>Edit</button>
                 <button onClick={(e) => { e.stopPropagation(); handleDelete(Article.id); }}>Delete</button>
-              </td>
+              </td> )} 
             </tr>
           ))}
         </tbody>
@@ -150,7 +151,7 @@ const Articles = () => {
 
       <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
       <br />
-      <button onClick={() => navigate('/articles/add')}>Add new article</button>
+     {(logged && <button onClick={() => navigate('/articles/add')}>Add new article</button>)} 
     </div>
   );
 };
